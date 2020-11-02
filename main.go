@@ -25,21 +25,15 @@ type Requester struct {
 	client http.Client
 }
 
-type DelawareDataParams struct {
-	Race		string
-	SchoolCode 	int
-	SchoolYear 	int
-}
-
 func main() {
 
-	params := DelawareDataParams{
+	params := dataStructs.StudentEnrollmentParams {
 		Race: "White",
 		SchoolCode: 418,
-		SchoolYear: 2020,
+		SchoolYear: "2020",
 	}
 
-	var resp dataStructs.EnrollmentDataSet
+	var resp dataStructs.StudentEnrollmentData
 
 	err := DefaultRequest.Request("6i7v-xnmf.json", params , &resp)
 	if err != nil {
@@ -96,17 +90,21 @@ func (r *Requester) makeParams(params interface{}) string {
 	value := reflect.ValueOf(params)
 
 	num := key.NumField()
-
+	var firstParam = true
 	for i:=0;i<num;i++ {
-		if(i==0){
-			output.WriteString("?")
-		} else {
-			output.WriteString("&")
+		tmp := value.Field(i).Interface()
+		if !(tmp == 0 || tmp == "") {
+			if (firstParam) {
+				output.WriteString("?")
+				firstParam = false
+			} else {
+				output.WriteString("&")
+			}
+			output.WriteString(strings.ToLower(key.Field(i).Name))
+			output.WriteString("=")
+			val := fmt.Sprintf("%v", tmp)
+			output.WriteString(val)
 		}
-		output.WriteString(strings.ToLower(key.Field(i).Name))
-		output.WriteString("=")
-		val := fmt.Sprintf("%v", value.Field(i).Interface())
-		output.WriteString(val)
 	}
 	return output.String()
 }
