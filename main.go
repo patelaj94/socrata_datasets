@@ -22,9 +22,10 @@ var DefaultRequest = Requester {
 
 type Requester struct {
 	Domain string
-	client http.Client
+	client http.Client	// Default Client
 }
 
+// TODO: Move the logic below to a Generic "api.go" class which can be used to make multiple types of requests from this class.
 func main() {
 
 	params := dataStructs.StudentEnrollmentParams {
@@ -35,6 +36,7 @@ func main() {
 
 	var resp dataStructs.StudentEnrollmentData
 
+	// TODO: Extract endpoint to grab from dataStruct Class
 	err := DefaultRequest.Request("6i7v-xnmf.json", params , &resp)
 	if err != nil {
 		fmt.Printf("There was an error with your request", err)
