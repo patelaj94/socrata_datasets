@@ -11,7 +11,15 @@ const (
 )
 func main() {
 
-	response, err := StudentEnrollmentCall("White", 418, "2020")
+	// TODO - Input for params will come from CLI input or GraphQL
+	params := dataStructs.StudentEnrollmentParams {
+		Race: "White",
+		SchoolCode: 418,
+		SchoolYear: "2020",
+	}
+
+	response, err := StudentEnrollmentCall(params)
+
 	if err != nil {
 		fmt.Printf("There was an error with your request", err)
 	} else {
@@ -23,13 +31,7 @@ func main() {
 }
 
 
-func StudentEnrollmentCall(race string, schoolCode int, schoolYear string) (dataStructs.StudentEnrollmentData, error) {
-
-	params := dataStructs.StudentEnrollmentParams {
-		Race: race,
-		SchoolCode: schoolCode,
-		SchoolYear: schoolYear,
-	}
+func StudentEnrollmentCall(params interface{}) (dataStructs.StudentEnrollmentData, error) {
 
 	var resp dataStructs.StudentEnrollmentData
 
