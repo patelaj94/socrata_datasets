@@ -65,16 +65,16 @@ func (r *Requester) Request(endpoint string, params interface{}, resp interface{
 func (r *Requester) makeParams(params interface{}) string {
 
 	var output strings.Builder
-	// Using reflection - idk what it's doing
+	// Using reflection
 	key := reflect.TypeOf(params)
 	value := reflect.ValueOf(params)
 
 	num := key.NumField()
 	var firstParam = true
 	for i:=0;i<num;i++ {
-		tmp := value.Field(i).Interface()
-		if !(tmp == 0 || tmp == "") {
-			if (firstParam) {
+		if !(value.Field(i).IsZero()) {
+			tmp := value.Field(i).Interface()
+			if firstParam {
 				output.WriteString("?")
 				firstParam = false
 			} else {
