@@ -40,7 +40,3 @@ type StudentEnrollmentParams struct {
 	FallEnrollment 		int		`json:"FallEnrollment,string,omitempty"`
 
 }
-
-const (
-	NBAStatsDomain = "stats.nba.com"
-)
