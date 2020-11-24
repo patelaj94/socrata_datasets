@@ -36,7 +36,7 @@ func main() {
 	wg := sync.WaitGroup{}
 	ch := make(chan Result)
 
-	wg.Add(2) // tentative
+	wg.Add(2)
 	go EducatorAverageSalaryCall(params1, ch, &wg)
 	go StudentEnrollmentCall(params2, ch, &wg)
 
