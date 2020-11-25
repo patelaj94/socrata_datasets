@@ -1,4 +1,4 @@
-package dataStructs
+package datastructs
 
 type EducatorAverageSalary struct {
 	SchoolYear                  string

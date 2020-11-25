@@ -29,7 +29,7 @@ type Requester struct {
 func (r *Requester) Request(endpoint string, params interface{}, resp interface{}) error {
 
 	// Make Params
-	urlParams := r.makeParams(params)
+	urlParams := r.MakeParams(params)
 	// Build Query Endpoint
 	var reqUrl = DelawareDataDomain + endpoint + urlParams
 	fmt.Println(reqUrl)
@@ -59,7 +59,7 @@ func (r *Requester) Request(endpoint string, params interface{}, resp interface{
 
 // Method for Requester Struct
 // Method will take params interface and build http query params
-func (r *Requester) makeParams(params interface{}) string {
+func (r *Requester) MakeParams(params interface{}) string {
 
 	var output strings.Builder
 	// Using reflection

@@ -1,4 +1,4 @@
-package dataStructs
+package datastructs
 
 type StudentEnrollment struct {
 	SchoolYear     string
