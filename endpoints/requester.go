@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
-	"reflect"
-	"strings"
 )
 
 const (
-	DelawareDataDomain = "https://data.delaware.gov/resource/"
+	DelawareDataDomain = "data.delaware.gov/resource/"
 )
 
 var DefaultRequest = Requester{
@@ -23,23 +22,16 @@ type Requester struct {
 	client http.Client // Default Client
 }
 
-// Method for Requester Struct
 // Method will have a pointer receiver
 // Method will take endpoint, list of query params, and return the response object
-func (r *Requester) Request(endpoint string, params interface{}, resp interface{}) error {
-
-	// Make Params
-	urlParams := r.makeParams(params)
-	// Build Query Endpoint
-	var reqUrl = DelawareDataDomain + endpoint + urlParams
-	fmt.Println(reqUrl)
+func (r *Requester) Request(endpoint string, params map[string]string, resp interface{}) error {
+	var reqUrl = buildUrl(endpoint, params)
 	// GET Request
-	req, err := http.NewRequest("GET", reqUrl, nil)
+	req, err := http.NewRequest("GET", reqUrl.String(), nil)
 	req.Header.Set("Access-Control-Allow-Origin", "*")
 
 	// Make Request
-	response, err := r.client.Do(req)
-
+	response, err := r.client.Do(req) //fmt.Print(response)
 	if err != nil {
 		fmt.Printf("There was an error making the request", err)
 		return err
@@ -57,31 +49,24 @@ func (r *Requester) Request(endpoint string, params interface{}, resp interface{
 	return nil
 }
 
-// Method for Requester Struct
-// Method will take params interface and build http query params
-func (r *Requester) makeParams(params interface{}) string {
+// Method will take query params and query host to build request url
+func buildUrl(endpoint string, params map[string]string) url.URL {
 
-	var output strings.Builder
-	// Using reflection
-	key := reflect.TypeOf(params)
-	value := reflect.ValueOf(params)
-
-	num := key.NumField()
-	var firstParam = true
-	for i := 0; i < num; i++ {
-		if !(value.Field(i).IsZero()) {
-			tmp := value.Field(i).Interface()
-			if firstParam {
-				output.WriteString("?")
-				firstParam = false
-			} else {
-				output.WriteString("&")
-			}
-			output.WriteString(strings.ToLower(key.Field(i).Name))
-			output.WriteString("=")
-			val := fmt.Sprintf("%v", tmp)
-			output.WriteString(val)
+	reqUrl := url.URL{}
+	reqUrl.Scheme = "https"
+	reqUrl.Path = DelawareDataDomain + endpoint
+	q := reqUrl.Query()
+	var isFirst = true
+	for k, val := range params {
+		if isFirst {
+			q.Set(k, val)
+			isFirst = false
+		} else {
+			q.Add(k, val)
 		}
 	}
-	return output.String()
+	reqUrl.RawQuery = q.Encode()
+	fmt.Println(reqUrl.String())
+
+	return reqUrl
 }

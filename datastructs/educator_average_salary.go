@@ -26,6 +26,7 @@ type EducatorAverageSalary struct {
 
 type EducatorAverageSalaryData []EducatorAverageSalary
 
+// TODO: params should all be lowercase when making request
 type EducatorAverageSalaryParams struct {
 	SchoolYear                  string
 	DistrictCode                int `json:"DistrictCode,string,omitempty"`

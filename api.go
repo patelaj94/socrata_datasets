@@ -20,17 +20,10 @@ type Result struct {
 func main() {
 
 	// TODO - Input for params will come from CLI input or GraphQL
-	params1 := datastructs.EducatorAverageSalaryParams{
-		Race:       "White",
-		SchoolCode: 418,
-		SchoolYear: "2020",
-	}
-
-	params2 := datastructs.StudentEnrollmentParams{
-		Race:       "White",
-		SchoolCode: 418,
-		SchoolYear: "2020",
-	}
+	params1 := make(map[string]string)
+	params1["race"] = "White"
+	params1["schoolcode"] = "418"
+	params1["schoolyear"] = "2020"
 
 	// to experiment and learn go routines and channels
 	wg := sync.WaitGroup{}
@@ -38,7 +31,7 @@ func main() {
 
 	wg.Add(2)
 	go educatorAverageSalaryCall(params1, ch, &wg)
-	go studentEnrollmentCall(params2, ch, &wg)
+	go studentEnrollmentCall(params1, ch, &wg)
 
 	go func() {
 		wg.Wait()
@@ -56,7 +49,7 @@ func main() {
 
 }
 
-func studentEnrollmentCall(params interface{}, ch chan Result, wg *sync.WaitGroup) {
+func studentEnrollmentCall(params map[string]string, ch chan Result, wg *sync.WaitGroup) {
 	defer wg.Done()
 	var resp datastructs.StudentEnrollmentData
 	res := new(Result)
@@ -70,7 +63,7 @@ func studentEnrollmentCall(params interface{}, ch chan Result, wg *sync.WaitGrou
 	}
 }
 
-func educatorAverageSalaryCall(params interface{}, ch chan Result, wg *sync.WaitGroup) {
+func educatorAverageSalaryCall(params map[string]string, ch chan Result, wg *sync.WaitGroup) {
 	defer wg.Done()
 	var resp datastructs.EducatorAverageSalaryData
 	res := new(Result)
