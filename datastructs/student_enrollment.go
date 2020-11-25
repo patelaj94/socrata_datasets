@@ -20,6 +20,7 @@ type StudentEnrollment struct {
 
 type StudentEnrollmentData []StudentEnrollment
 
+// TODO: params should all be lowercase when making request
 type StudentEnrollmentParams struct {
 	SchoolYear     string
 	DistrictCode   int `json:"DistrictCode,string,omitempty"`
