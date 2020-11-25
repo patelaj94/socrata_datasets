@@ -1,11 +1,11 @@
 package endpoints
 
 import (
-	"net/http"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
-	"encoding/json"
 	"reflect"
 	"strings"
 )
@@ -14,16 +14,14 @@ const (
 	DelawareDataDomain = "https://data.delaware.gov/resource/"
 )
 
-var DefaultRequest = Requester {
+var DefaultRequest = Requester{
 	Domain: DelawareDataDomain,
-
 }
 
 type Requester struct {
 	Domain string
-	client http.Client	// Default Client
+	client http.Client // Default Client
 }
-
 
 // Method for Requester Struct
 // Method will have a pointer receiver
@@ -59,7 +57,6 @@ func (r *Requester) Request(endpoint string, params interface{}, resp interface{
 	return nil
 }
 
-
 // Method for Requester Struct
 // Method will take params interface and build http query params
 func (r *Requester) makeParams(params interface{}) string {
@@ -71,7 +68,7 @@ func (r *Requester) makeParams(params interface{}) string {
 
 	num := key.NumField()
 	var firstParam = true
-	for i:=0;i<num;i++ {
+	for i := 0; i < num; i++ {
 		if !(value.Field(i).IsZero()) {
 			tmp := value.Field(i).Interface()
 			if firstParam {
