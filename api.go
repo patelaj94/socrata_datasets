@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"datasets/dataStructs"
+	"datasets/datastructs"
 	"datasets/endpoints"
+	"fmt"
 	"sync"
 )
 
@@ -13,21 +13,21 @@ const (
 )
 
 type Result struct {
-	value 	interface{}
-	error  	error
+	value interface{}
+	error error
 }
 
 func main() {
 
 	// TODO - Input for params will come from CLI input or GraphQL
-	params1 := dataStructs.EducatorAverageSalaryParams {
-		Race: "White",
+	params1 := datastructs.EducatorAverageSalaryParams{
+		Race:       "White",
 		SchoolCode: 418,
 		SchoolYear: "2020",
 	}
 
-	params2 := dataStructs.StudentEnrollmentParams {
-		Race: "White",
+	params2 := datastructs.StudentEnrollmentParams{
+		Race:       "White",
 		SchoolCode: 418,
 		SchoolYear: "2020",
 	}
@@ -40,8 +40,7 @@ func main() {
 	go EducatorAverageSalaryCall(params1, ch, &wg)
 	go StudentEnrollmentCall(params2, ch, &wg)
 
-
-	go func(){
+	go func() {
 		wg.Wait()
 		close(ch)
 	}()
@@ -57,10 +56,9 @@ func main() {
 
 }
 
-
 func StudentEnrollmentCall(params interface{}, ch chan Result, wg *sync.WaitGroup) {
 
-	var resp dataStructs.StudentEnrollmentData
+	var resp datastructs.StudentEnrollmentData
 	res := new(Result)
 
 	if err := endpoints.DefaultRequest.Request(StudentEnrollmentData, params, &resp); err != nil {
@@ -75,7 +73,7 @@ func StudentEnrollmentCall(params interface{}, ch chan Result, wg *sync.WaitGrou
 
 func EducatorAverageSalaryCall(params interface{}, ch chan Result, wg *sync.WaitGroup) {
 
-	var resp dataStructs.EducatorAverageSalaryData
+	var resp datastructs.EducatorAverageSalaryData
 	res := new(Result)
 
 	if err := endpoints.DefaultRequest.Request(EducatorAverageSalary, params, &resp); err != nil {
