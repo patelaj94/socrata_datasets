@@ -1,8 +1,7 @@
 package main
 
 import (
-	"datasets/datastructs"
-	"datasets/endpoints"
+	"DelawareData/datastructs"
 	"fmt"
 	"sync"
 )
@@ -54,7 +53,7 @@ func studentEnrollmentCall(params map[string]string, ch chan Result, wg *sync.Wa
 	var resp datastructs.StudentEnrollmentData
 	res := new(Result)
 
-	if err := endpoints.DefaultRequest.Request(StudentEnrollmentData, params, &resp); err != nil {
+	if err := DefaultRequest.Request(StudentEnrollmentData, params, &resp); err != nil {
 		res.err = err
 		ch <- *res
 	} else {
@@ -68,7 +67,7 @@ func educatorAverageSalaryCall(params map[string]string, ch chan Result, wg *syn
 	var resp datastructs.EducatorAverageSalaryData
 	res := new(Result)
 
-	if err := endpoints.DefaultRequest.Request(EducatorAverageSalary, params, &resp); err != nil {
+	if err := DefaultRequest.Request(EducatorAverageSalary, params, &resp); err != nil {
 		res.err = err
 		ch <- *res
 	} else {
